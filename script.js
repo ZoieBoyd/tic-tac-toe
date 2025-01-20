@@ -1,12 +1,12 @@
-const gameboard = (() => { // IIFE
-    const newBoard = () => new Array(3).fill(null).map(() => new Array(3).fill(""));
-    let board = newBoard(); // Creates 3x3 2D Array- easier to reference cells in console for testing
+const gameboard = (() => {
+    const newBoard = () => new Array(3).fill(null).map(() => new Array(3).fill("")); // Creates a 3x3 empty game board
+    let board = newBoard();
     const resetBoard = () => board = newBoard();
     const getBoard = () => board;
     return {getBoard, resetBoard};
 })();
 
-function player(name, symbol) { // Factory Function
+function player(name, symbol) {
     let score = 0;
     const getScore = () => score;
     const increaseScore = () => score++;
@@ -17,6 +17,8 @@ function player(name, symbol) { // Factory Function
 
 const gameController = (() => {
     const board = gameboard.getBoard();
+    let isPlaying = true;
+    const getPlayStatus = () => isPlaying;
     const players = [
         player("Player One", "X"),
         player("Player Two", "O")
@@ -72,18 +74,42 @@ const gameController = (() => {
                 )
             ) {
                 console.log(`${currentPlayer.getPlayerName()} has won!`);
-                gameboard.resetBoard();
+                currentPlayer.increaseScore();
+                console.log(`Current Scores:\n${players[0].getPlayerName()}: ${players[0].getScore()}\t${players[1].getPlayerName()}: ${players[1].getScore()}`)
+                isPlaying = false;
+                //gameboard.resetBoard();
             }
         }
     }        
-
-    return {makeMove}
+    return {getCurrentPlayer, makeMove, getPlayStatus};
 })();
-/*
-// This should be the only section that handles DOM elements.
-function screenController() {
 
-}
+const screenController = (() => {
+    const gameboardDiv = document.querySelector(".gameboard");
+    const currentPlayerDiv = document.querySelector(".current-player");
 
-screenController();
-*/
+    const updateScreen = () => {
+        gameboardDiv.textContent = "";
+        const board = gameboard.getBoard();
+        currentPlayerDiv.textContent = `${gameController.getCurrentPlayer().getPlayerName()}'s turn!`;
+        board.forEach((row, rowIndex)=> {
+            row.forEach((cell, columnIndex) => {
+                const cellBtn = document.createElement("button");
+                cellBtn.className ="cell-button";
+                cellBtn.textContent = cell;
+                cellBtn.addEventListener("click", () => {
+                    gameController.makeMove(rowIndex, columnIndex);
+                    gameController.getPlayStatus();
+                    updateScreen();
+                });
+                if (!gameController.getPlayStatus()) {
+                    cellBtn.disabled = true;
+                    currentPlayerDiv.textContent = "Winner"; 
+                }
+                gameboardDiv.appendChild(cellBtn);
+            });
+        });
+    }
+
+    updateScreen();
+})();
