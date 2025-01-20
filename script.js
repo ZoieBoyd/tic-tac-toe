@@ -1,7 +1,9 @@
 const gameboard = (() => { // IIFE
-    const board = new Array(3).fill(null).map(() => new Array(3).fill("")); // Creates 3x3 2D Array- easier to reference cells in console for testing
+    const newBoard = () => new Array(3).fill(null).map(() => new Array(3).fill(""));
+    let board = newBoard(); // Creates 3x3 2D Array- easier to reference cells in console for testing
+    const resetBoard = () => board = newBoard();
     const getBoard = () => board;
-    return {getBoard};
+    return {getBoard, resetBoard};
 })();
 
 function player(name, symbol) { // Factory Function
@@ -33,7 +35,7 @@ const gameController = (() => {
             checkWinner();
             switchPlayerTurn();
         } else {
-            console.log("Symbol already present in this cell or does not exist! Try again");
+            console.error("Symbol already present in this cell or does not exist! Try again");
         }
     }
 
@@ -69,12 +71,13 @@ const gameController = (() => {
                     )
                 )
             ) {
-                console.log("Winner");
+                console.log(`${currentPlayer.getPlayerName()} has won!`);
+                gameboard.resetBoard();
             }
         }
     }        
 
-    return {switchPlayerTurn, getCurrentPlayer, makeMove}
+    return {makeMove}
 })();
 /*
 // This should be the only section that handles DOM elements.
