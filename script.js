@@ -35,7 +35,7 @@ const gameController = (() => {
             board[row][column] = currentPlayer.getPlayerSymbol();
             console.log(board);
             checkWinner();
-            switchPlayerTurn();
+            isPlaying && switchPlayerTurn();
         } else {
             console.error("Symbol already present in this cell or does not exist! Try again");
         }
@@ -80,23 +80,33 @@ const gameController = (() => {
                 //gameboard.resetBoard();
             }
         }
-    }        
-    return {getCurrentPlayer, makeMove, getPlayStatus};
+    }
+    
+    return {getCurrentPlayer, makeMove, getPlayStatus, players};
 })();
 
 const screenController = (() => {
     const gameboardDiv = document.querySelector(".gameboard");
     const currentPlayerDiv = document.querySelector(".current-player");
-
+    const playerOneScore = document.querySelector(".player-one-score")
+    const playerTwoScore = document.querySelector(".player-two-score");
+    playerOneScore.textContent = `${gameController.players[0].getPlayerName()} Wins:`;
+    playerTwoScore.textContent = `${gameController.players[1].getPlayerName()} Wins:`;
     const updateScreen = () => {
-        gameboardDiv.textContent = "";
+        const currentPlayer = gameController.getCurrentPlayer();
+        gameboardDiv.replaceChildren();
         const board = gameboard.getBoard();
-        currentPlayerDiv.textContent = `${gameController.getCurrentPlayer().getPlayerName()}'s turn!`;
+        currentPlayerDiv.textContent = `Your Turn ${currentPlayer.getPlayerName()}!`;
         board.forEach((row, rowIndex)=> {
             row.forEach((cell, columnIndex) => {
                 const cellBtn = document.createElement("button");
-                cellBtn.className ="cell-button";
                 cellBtn.textContent = cell;
+                cellBtn.classList.add("cell-button");
+                if(cellBtn.textContent === "X") {
+                    cellBtn.classList.add("x-symbol");
+                } else if(cellBtn.textContent === "O") {
+                    cellBtn.classList.add("o-symbol");
+                }
                 cellBtn.addEventListener("click", () => {
                     gameController.makeMove(rowIndex, columnIndex);
                     gameController.getPlayStatus();
@@ -104,12 +114,11 @@ const screenController = (() => {
                 });
                 if (!gameController.getPlayStatus()) {
                     cellBtn.disabled = true;
-                    currentPlayerDiv.textContent = "Winner"; 
+                    currentPlayerDiv.textContent = `${currentPlayer.getPlayerName()} Wins!`; 
                 }
                 gameboardDiv.appendChild(cellBtn);
             });
         });
     }
-
     updateScreen();
 })();

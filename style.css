@@ -1,3 +1,27 @@
+@font-face {
+    font-family: "baby-gemoy";
+    src: url(fonts/Baby\ Gemoy.woff2) format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "fredoka-one";
+    src: url(fonts/FredokaOne-Regular.woff2) format('woff2');
+}
+
+:root {
+    --blue: #47F9FF;
+    --bright-pink: #F43DBD;
+    --pink: #FF80D5;
+}
+
+body {
+    background-color: var(--bright-pink);
+    font-family: "fredoka-one";
+    color: white;
+}
+
 .container {
     height: 95vh;
     display: flex;
@@ -6,18 +30,34 @@
     justify-content: center;
 }
 
+.current-player {
+    font-size: 6rem;
+    padding: 2rem;
+}
+
 .gameboard {
     display: grid;
-    gap: 0.7rem;
+    gap: 1.2rem;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
 }
 
 .cell-button {
-    background-color: black;
-    color: white;
+    background-color: white;
+    color: var(--pink);
     border: none;
-    width: 200px;
-    height: 200px;
-    font-size: 5rem;
+    width: min(22vw, 22vh);
+    height: min(22vw, 22vh);
+    font-family: "baby-gemoy";
+    font-size: clamp(2rem, 10vw, 9rem);
+    -webkit-text-stroke: 4px black;
+    border-radius: 15px;
+}
+
+.x-symbol {
+    color: var(--pink);
+}
+
+.o-symbol {
+    color: var(--blue);
 }
