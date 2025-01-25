@@ -14,6 +14,8 @@
     --blue: #47F9FF;
     --bright-pink: #F43DBD;
     --pink: #FF80D5;
+    --pale-pink: #ffb8e7;
+    --pale-blue: #baf3f5;
 }
 
 body {
@@ -24,18 +26,25 @@ body {
 
 .container {
     height: 95vh;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-areas:"turnText turnText turnText"
+                        "p1Score gameBoard p2Score"
+                        ". replay .";
+    grid-template-columns: 2fr 1fr 2fr;
     align-items: center;
-    justify-content: center;
+    align-content: center;
+    justify-items: center;
 }
 
 .current-player {
-    font-size: 6rem;
+    text-align: center;
+    grid-area: turnText;
+    font-size: clamp(1rem, 10vw, 5.5rem);
     padding: 2rem;
 }
 
 .gameboard {
+    grid-area: gameBoard;
     display: grid;
     gap: 1.2rem;
     grid-template-columns: repeat(3, 1fr);
@@ -46,10 +55,10 @@ body {
     background-color: white;
     color: var(--pink);
     border: none;
-    width: min(22vw, 22vh);
-    height: min(22vw, 22vh);
+    width:  21vh;
+    height: 21vh;
     font-family: "baby-gemoy";
-    font-size: clamp(2rem, 10vw, 9rem);
+    font-size: clamp(2rem, 10vw, 8rem);
     -webkit-text-stroke: 4px black;
     border-radius: 15px;
 }
@@ -60,4 +69,49 @@ body {
 
 .o-symbol {
     color: var(--blue);
+}
+
+.player-one {
+    color: var(--pale-pink);
+}
+
+.player-two {
+    color: var(--pale-blue);
+}
+
+.score-container {
+    align-content: center;
+    width: 45%;
+    text-align: center;
+    background-color: var(--pink);
+    border-radius: 15px;
+    height: 35vh;
+}
+
+.p1-container {
+    grid-area: p1Score;
+}
+
+.p2-container {
+    grid-area: p2Score;
+}
+
+.p1-name, .p2-name {
+    font-size: 2.5rem;
+}
+
+.p1-score, .p2-score {
+    font-size: 6rem;
+}
+
+.replay-btn {
+    visibility: hidden;
+    background: url(images/replay.svg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 5vw;
+    height: 5vw;
+    border: none;
+    grid-area: replay;
+    margin-top: 2rem;
 }

@@ -16,7 +16,6 @@ function player(name, symbol) {
 }
 
 const gameController = (() => {
-    const board = gameboard.getBoard();
     let isPlaying = true;
     const getPlayStatus = () => isPlaying;
     const players = [
@@ -31,6 +30,7 @@ const gameController = (() => {
     const getCurrentPlayer = () => currentPlayer;
 
     const makeMove = (row, column) => { 
+        let board = gameboard.getBoard();
         if (board[row][column] === "") {
             board[row][column] = currentPlayer.getPlayerSymbol();
             console.log(board);
@@ -56,6 +56,7 @@ const gameController = (() => {
     ];
 
     const checkWinner = () => {
+        let board = gameboard.getBoard();
         const coordinates = [];
         for(let row = 0; row < board.length; row++) {
             for(let column = 0; column < board[row].length; column++) {
@@ -65,8 +66,7 @@ const gameController = (() => {
             }
         }
         for (const condition of winningConditions) {
-            if (
-                condition.every(conditionCoords => 
+            if (condition.every(conditionCoords => 
                     coordinates.some(playerCoords =>
                         playerCoords[0] === conditionCoords[0] &&
                         playerCoords[1] === conditionCoords[1]
@@ -81,22 +81,35 @@ const gameController = (() => {
             }
         }
     }
-    
-    return {getCurrentPlayer, makeMove, getPlayStatus, players};
+
+    const newRound = () => {
+        gameboard.resetBoard();
+        isPlaying = true;
+        currentPlayer = players[0];
+    }
+
+    return {getCurrentPlayer, makeMove, getPlayStatus, players, newRound};
 })();
 
 const screenController = (() => {
+    const container = document.querySelector(".container");
     const gameboardDiv = document.querySelector(".gameboard");
     const currentPlayerDiv = document.querySelector(".current-player");
-    const playerOneScore = document.querySelector(".player-one-score")
-    const playerTwoScore = document.querySelector(".player-two-score");
-    playerOneScore.textContent = `${gameController.players[0].getPlayerName()} Wins:`;
-    playerTwoScore.textContent = `${gameController.players[1].getPlayerName()} Wins:`;
+    const p1NameText = document.querySelector(".p1-name");
+    const p2NameText = document.querySelector(".p2-name");
+    const p1ScoreText = document.querySelector(".p1-score");
+    const p2ScoreText = document.querySelector(".p2-score");
+    const replayBtn = document.querySelector(".replay-btn");
     const updateScreen = () => {
+        p1NameText.textContent = `${gameController.players[0].getPlayerName()} Wins:`;
+        p2NameText.textContent = `${gameController.players[1].getPlayerName()} Wins:`;
+        p1ScoreText.textContent = `${gameController.players[0].getScore()}`;
+        p2ScoreText.textContent = `${gameController.players[1].getScore()}`;
         const currentPlayer = gameController.getCurrentPlayer();
         gameboardDiv.replaceChildren();
-        const board = gameboard.getBoard();
-        currentPlayerDiv.textContent = `Your Turn ${currentPlayer.getPlayerName()}!`;
+        let board = gameboard.getBoard();
+        currentPlayerDiv.innerHTML = `Your Turn <span class="${currentPlayer.getPlayerSymbol() === 'X' ? 'player-one' : 'player-two'}">
+        ${currentPlayer.getPlayerName()}</span>!`;
         board.forEach((row, rowIndex)=> {
             row.forEach((cell, columnIndex) => {
                 const cellBtn = document.createElement("button");
@@ -114,7 +127,13 @@ const screenController = (() => {
                 });
                 if (!gameController.getPlayStatus()) {
                     cellBtn.disabled = true;
-                    currentPlayerDiv.textContent = `${currentPlayer.getPlayerName()} Wins!`; 
+                    currentPlayerDiv.innerHTML = `<span class="${currentPlayer.getPlayerSymbol() === 'X' ? 'player-one' : 'player-two'}">${currentPlayer.getPlayerName()}</span> Wins!`;
+                    replayBtn.style.visibility = "visible";
+                    replayBtn.addEventListener("click", () => {
+                       gameController.newRound();
+                       updateScreen(); 
+                       replayBtn.style.visibility = "hidden";
+                    });
                 }
                 gameboardDiv.appendChild(cellBtn);
             });
