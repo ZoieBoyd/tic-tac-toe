@@ -77,7 +77,6 @@ const gameController = (() => {
                 currentPlayer.increaseScore();
                 console.log(`Current Scores:\n${players[0].getPlayerName()}: ${players[0].getScore()}\t${players[1].getPlayerName()}: ${players[1].getScore()}`)
                 isPlaying = false;
-                //gameboard.resetBoard();
             }
         }
     }
@@ -100,44 +99,61 @@ const screenController = (() => {
     const p1ScoreText = document.querySelector(".p1-score");
     const p2ScoreText = document.querySelector(".p2-score");
     const replayBtn = document.querySelector(".replay-btn");
-    const updateScreen = () => {
+    
+    const updatePlayerInfo = () => {
         p1NameText.textContent = `${gameController.players[0].getPlayerName()} Wins:`;
         p2NameText.textContent = `${gameController.players[1].getPlayerName()} Wins:`;
         p1ScoreText.textContent = `${gameController.players[0].getScore()}`;
         p2ScoreText.textContent = `${gameController.players[1].getScore()}`;
+    };
+
+    const updateCurrentPlayerText = () => {
         const currentPlayer = gameController.getCurrentPlayer();
-        gameboardDiv.replaceChildren();
-        let board = gameboard.getBoard();
         currentPlayerDiv.innerHTML = `Your Turn <span class="${currentPlayer.getPlayerSymbol() === 'X' ? 'player-one' : 'player-two'}">
         ${currentPlayer.getPlayerName()}</span>!`;
+    }
+
+    const renderBoard = () => { 
+        gameboardDiv.replaceChildren();
+
+        let board = gameboard.getBoard();
         board.forEach((row, rowIndex)=> {
             row.forEach((cell, columnIndex) => {
                 const cellBtn = document.createElement("button");
                 cellBtn.textContent = cell;
                 cellBtn.classList.add("cell-button");
-                if(cellBtn.textContent === "X") {
-                    cellBtn.classList.add("x-symbol");
-                } else if(cellBtn.textContent === "O") {
-                    cellBtn.classList.add("o-symbol");
-                }
+                
+                if(cellBtn.textContent === "X") cellBtn.classList.add("x-symbol");
+                else if(cellBtn.textContent === "O") cellBtn.classList.add("o-symbol");
+
                 cellBtn.addEventListener("click", () => {
-                    gameController.makeMove(rowIndex, columnIndex);
-                    gameController.getPlayStatus();
-                    updateScreen();
+                    if(gameController.getPlayStatus()) {
+                        gameController.makeMove(rowIndex, columnIndex);
+                        updateScreen();
+                    }
                 });
-                if (!gameController.getPlayStatus()) {
-                    cellBtn.disabled = true;
-                    currentPlayerDiv.innerHTML = `<span class="${currentPlayer.getPlayerSymbol() === 'X' ? 'player-one' : 'player-two'}">${currentPlayer.getPlayerName()}</span> Wins!`;
-                    replayBtn.style.visibility = "visible";
-                    replayBtn.addEventListener("click", () => {
-                       gameController.newRound();
-                       updateScreen(); 
-                       replayBtn.style.visibility = "hidden";
-                    });
-                }
+
                 gameboardDiv.appendChild(cellBtn);
             });
         });
-    }
+    };
+
+    const updateScreen = () => {
+        updatePlayerInfo();
+        updateCurrentPlayerText();
+        renderBoard();
+        
+        if (!gameController.getPlayStatus()) {
+            const currentPlayer = gameController.getCurrentPlayer();
+            currentPlayerDiv.innerHTML = `<span class="${currentPlayer.getPlayerSymbol() === 'X' ? 'player-one' : 'player-two'}">${currentPlayer.getPlayerName()}</span> Wins!`; 
+            replayBtn.style.visibility = "visible";
+            replayBtn.addEventListener("click", () => {
+               gameController.newRound();
+               updateScreen(); 
+               replayBtn.style.visibility = "hidden";
+            });
+        };
+    };
+
     updateScreen();
 })();
