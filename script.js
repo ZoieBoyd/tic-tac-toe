@@ -17,6 +17,7 @@ function player(name, symbol) {
 
 const gameController = (() => {
     let isPlaying = true;
+    let moveCount = 0;
     const getPlayStatus = () => isPlaying;
     const players = [
         player("Player One", "X"),
@@ -34,12 +35,24 @@ const gameController = (() => {
         if (board[row][column] === "") {
             board[row][column] = currentPlayer.getPlayerSymbol();
             console.log(board);
-            checkWinner();
+            moveCount++;
+            if (checkWinner()) {
+                console.log(`${currentPlayer.getPlayerName()} has won!`);
+                currentPlayer.increaseScore();
+                isPlaying = false;
+                return;
+            } else if (moveCount >= 9) {
+                console.log("It's a tie!");
+                isPlaying = false;
+                return;
+            }
             isPlaying && switchPlayerTurn();
         } else {
             console.error("Symbol already present in this cell or does not exist! Try again");
         }
     }
+
+    const getMoveCount = () => moveCount;
 
     const winningConditions = [
         // Columns
@@ -57,37 +70,19 @@ const gameController = (() => {
 
     const checkWinner = () => {
         let board = gameboard.getBoard();
-        const coordinates = [];
-        for(let row = 0; row < board.length; row++) {
-            for(let column = 0; column < board[row].length; column++) {
-                if(currentPlayer.getPlayerSymbol() === board[row][column]) {
-                    coordinates.push([row, column]);
-                }
-            }
-        }
-        for (const condition of winningConditions) {
-            if (condition.every(conditionCoords => 
-                    coordinates.some(playerCoords =>
-                        playerCoords[0] === conditionCoords[0] &&
-                        playerCoords[1] === conditionCoords[1]
-                    )
-                )
-            ) {
-                console.log(`${currentPlayer.getPlayerName()} has won!`);
-                currentPlayer.increaseScore();
-                console.log(`Current Scores:\n${players[0].getPlayerName()}: ${players[0].getScore()}\t${players[1].getPlayerName()}: ${players[1].getScore()}`)
-                isPlaying = false;
-            }
-        }
+        return winningConditions.some(condition => 
+            condition.every(([row, col]) => board[row][col] === currentPlayer.getPlayerSymbol())
+        );
     }
 
     const newRound = () => {
         gameboard.resetBoard();
         isPlaying = true;
+        moveCount = 0;
         currentPlayer = players[0];
     }
 
-    return {getCurrentPlayer, makeMove, getPlayStatus, players, newRound};
+    return {getCurrentPlayer, makeMove, getPlayStatus, players, newRound, getMoveCount};
 })();
 
 const screenController = (() => {
@@ -144,8 +139,12 @@ const screenController = (() => {
         renderBoard();
         
         if (!gameController.getPlayStatus()) {
-            const currentPlayer = gameController.getCurrentPlayer();
-            currentPlayerDiv.innerHTML = `<span class="${currentPlayer.getPlayerSymbol() === 'X' ? 'player-one' : 'player-two'}">${currentPlayer.getPlayerName()}</span> Wins!`; 
+            if (gameController.getMoveCount() === 9){
+                currentPlayerDiv.textContent = "It's a tie!";
+            } else {
+                const currentPlayer = gameController.getCurrentPlayer();
+                currentPlayerDiv.innerHTML = `<span class="${currentPlayer.getPlayerSymbol() === 'X' ? 'player-one' : 'player-two'}">${currentPlayer.getPlayerName()}</span> Wins!`; 
+            }
             replayBtn.style.visibility = "visible";
             replayBtn.addEventListener("click", () => {
                gameController.newRound();
@@ -154,6 +153,6 @@ const screenController = (() => {
             });
         };
     };
-
+    
     updateScreen();
 })();
