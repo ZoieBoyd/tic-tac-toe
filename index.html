@@ -4,10 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Tic Tac Toe</title>
+    <title>Tic-Tac-Toe</title>
     <link rel="icon" type="image/x-icon" href="images/favicon.png">
 </head>
 <body>
+   <dialog class="modal-container">
+       <form action="submit">
+        <h1 id="start-menu-title">Tic-Tac-Toe</h1>
+        <div id="name-inputs">
+        <p>
+            <label for="player-one-name">X</label>
+            <input type="text" id="player-one-name" placeholder="Enter your name..." maxlength="10">
+        </p>
+        <p>
+            <label for="player-two-name">O</label>
+            <input type="text" id="player-two-name" placeholder="Enter your name..." maxlength="10">
+        </p>
+        </div>
+        <p>
+        <button id="start-btn" type="submit">Start Game</button>
+    </form>
+   </dialog>
     <div class="container">
         <div class="current-player"></div>
         <div class="p1-container score-container">

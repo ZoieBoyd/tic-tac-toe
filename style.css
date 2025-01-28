@@ -1,8 +1,6 @@
 @font-face {
     font-family: "baby-gemoy";
     src: url(fonts/Baby\ Gemoy.woff2) format('woff2');
-    font-weight: normal;
-    font-style: normal;
 }
 
 @font-face {
@@ -10,20 +8,100 @@
     src: url(fonts/FredokaOne-Regular.woff2) format('woff2');
 }
 
+
+@font-face {
+    font-family: 'fredoka-light';
+    src: url('fonts/fredoka-light.woff2') format('woff2');
+}
+
 :root {
     --blue: #47F9FF;
     --bright-pink: #F43DBD;
     --pink: #FF80D5;
+    --deep-magenta: #BE3094;
     --pale-pink: #ffb8e7;
     --pale-blue: #baf3f5;
 }
 
 body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 95vh;
     background-color: var(--bright-pink);
     font-family: "fredoka-one";
     color: white;
 }
 
+/* Start Game Menu */
+dialog {
+    width: 55vw;
+    height: 65vh;
+    background-color: var(--bright-pink);
+    border-radius: 25px;
+    border: none; 
+}
+
+dialog::backdrop {
+    background-color: var(--deep-magenta);
+}
+
+form {
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3rem;
+}
+
+label {
+    font-family: "baby-gemoy";
+    -webkit-text-stroke: 2.6px black;
+    font-size: 4rem;
+}
+
+label[for="player-one-name"] {
+    color: var(--pink);
+
+}
+
+label[for="player-two-name"] {
+    color: var(--blue);
+}
+
+input[type="text"] {
+    border: none;
+    font-family: "fredoka-light";
+    font-weight: 600;
+    padding: 18px;
+    margin-left: 0.7vw;
+    border-radius: 15px;
+    font-size: 1.5rem;
+}
+
+#start-menu-title {
+    color: white;
+    font-weight: 400;
+    font-size: 5.5rem;
+    text-align: center;
+    margin-bottom: 0;
+}
+
+#name-inputs p {
+    display: flex;
+    align-items: center;
+}
+
+#start-btn {
+    font-family: "fredoka-one";
+    font-size: 2.3rem;
+    border: none;
+    background-color: var(--pink);
+    color: white;
+    border-radius: 25px;
+    padding: 15px 27px;
+}
+
+/* Game Screen */
 .container {
     height: 95vh;
     display: grid;

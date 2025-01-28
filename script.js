@@ -19,12 +19,19 @@ const gameController = (() => {
     let isPlaying = true;
     let moveCount = 0;
     const getPlayStatus = () => isPlaying;
-    const players = [
-        player("Player One", "X"),
-        player("Player Two", "O")
-    ];
+    let players = [];
+    let currentPlayer;
 
-    let currentPlayer = players[0];
+    const setPlayerNames = (p1, p2) => {
+        players = [
+            player(p1, "X"),
+            player(p2, "O")
+        ];
+        currentPlayer = players[0];
+    }
+
+    const getPlayers = () => players;
+
     const switchPlayerTurn = () => {
         currentPlayer = currentPlayer === players[0] ? players[1] : players[0];
     }
@@ -46,7 +53,7 @@ const gameController = (() => {
                 isPlaying = false;
                 return;
             }
-            isPlaying && switchPlayerTurn();
+            switchPlayerTurn();
         } else {
             console.error("Symbol already present in this cell or does not exist! Try again");
         }
@@ -82,11 +89,12 @@ const gameController = (() => {
         currentPlayer = players[0];
     }
 
-    return {getCurrentPlayer, makeMove, getPlayStatus, players, newRound, getMoveCount};
+    return {getCurrentPlayer, makeMove, getPlayStatus, setPlayerNames, getPlayers, newRound, getMoveCount};
 })();
 
 const screenController = (() => {
-    const container = document.querySelector(".container");
+    const dialog = document.querySelector(".modal-container");
+    const startBtn = document.querySelector("#start-btn");
     const gameboardDiv = document.querySelector(".gameboard");
     const currentPlayerDiv = document.querySelector(".current-player");
     const p1NameText = document.querySelector(".p1-name");
@@ -95,11 +103,28 @@ const screenController = (() => {
     const p2ScoreText = document.querySelector(".p2-score");
     const replayBtn = document.querySelector(".replay-btn");
     
+    const startMenu = () => {
+        dialog.showModal();
+        startBtn.addEventListener("click", (event) => {
+            event.preventDefault();
+            const p1Name = document.getElementById("player-one-name").value.trim();
+            const p2Name = document.getElementById("player-two-name").value.trim();
+            if(p1Name && p2Name){
+                gameController.setPlayerNames(p1Name, p2Name);
+                dialog.close();
+                updateScreen();
+            } else {
+                alert("Please input both player names.");
+            }
+        }); 
+    }
+
     const updatePlayerInfo = () => {
-        p1NameText.textContent = `${gameController.players[0].getPlayerName()} Wins:`;
-        p2NameText.textContent = `${gameController.players[1].getPlayerName()} Wins:`;
-        p1ScoreText.textContent = `${gameController.players[0].getScore()}`;
-        p2ScoreText.textContent = `${gameController.players[1].getScore()}`;
+        const players = gameController.getPlayers();
+        p1NameText.textContent = `${players[0].getPlayerName()} Wins:`;
+        p2NameText.textContent = `${players[1].getPlayerName()} Wins:`;
+        p1ScoreText.textContent = `${players[0].getScore()}`;
+        p2ScoreText.textContent = `${players[1].getScore()}`;
     };
 
     const updateCurrentPlayerText = () => {
@@ -137,6 +162,7 @@ const screenController = (() => {
         updatePlayerInfo();
         updateCurrentPlayerText();
         renderBoard();
+
         
         if (!gameController.getPlayStatus()) {
             if (gameController.getMoveCount() === 9){
@@ -153,6 +179,6 @@ const screenController = (() => {
             });
         };
     };
-    
-    updateScreen();
+
+    startMenu();
 })();
