@@ -55,7 +55,7 @@ form {
 label {
     font-family: "baby-gemoy";
     -webkit-text-stroke: 2.6px black;
-    font-size: 4rem;
+    font-size: clamp(3.5rem, 5vw, 4rem);
 }
 
 label[for="player-one-name"] {
@@ -80,7 +80,7 @@ input[type="text"] {
 #start-menu-title {
     color: white;
     font-weight: 400;
-    font-size: 5.5rem;
+    font-size: clamp(3.7rem, 10vw, 5.5rem);
     text-align: center;
     margin-bottom: 0;
 }
@@ -194,6 +194,15 @@ input[type="text"] {
 }
 
 @media only screen and (max-width: 1500px) {
+    dialog {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        width: 100vw;
+        border-radius: 0;
+    }
+
     .container {
         grid-template-areas: "turnText turnText"
                             "gameBoard gameBoard"
@@ -215,4 +224,5 @@ input[type="text"] {
     .gameboard {
         margin-bottom: 2.5rem;
     }
+
 }
