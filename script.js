@@ -105,6 +105,11 @@ const screenController = (() => {
     
     const startMenu = () => {
         dialog.showModal();
+
+        dialog.addEventListener('keydown', (event) => { // Prevents modal from closing on "Esc" key press
+            if (event.key === 'Escape') event.preventDefault();
+        });
+
         startBtn.addEventListener("click", (event) => {
             event.preventDefault();
             const p1Name = document.getElementById("player-one-name").value.trim();

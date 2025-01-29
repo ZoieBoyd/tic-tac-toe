@@ -49,6 +49,8 @@ form {
     display:flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    height: 100%;
     gap: 3rem;
 }
 
@@ -195,9 +197,6 @@ input[type="text"] {
 
 @media only screen and (max-width: 1500px) {
     dialog {
-        display: flex;
-        align-items: center;
-        justify-content: center;
         height: 100vh;
         width: 100vw;
         border-radius: 0;

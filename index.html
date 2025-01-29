@@ -13,16 +13,16 @@
         <h1 id="start-menu-title">Tic-Tac-Toe</h1>
         <div id="name-inputs">
         <p>
-            <label for="player-one-name">X</label>
-            <input type="text" id="player-one-name" placeholder="Enter your name..." maxlength="10">
+            <label for="player-one-name" id="player-one-label">X</label>
+            <input type="text" id="player-one-name" placeholder="Enter your name..." maxlength="10" aria-required="true" required aria-labelledby="player-one-label">
         </p>
         <p>
-            <label for="player-two-name">O</label>
-            <input type="text" id="player-two-name" placeholder="Enter your name..." maxlength="10">
+            <label for="player-two-name" id="player-two-label">O</label>
+            <input type="text" id="player-two-name" placeholder="Enter your name..." maxlength="10" aria-required="true" required aria-labelledby="player-two-label">
         </p>
         </div>
         <p>
-        <button id="start-btn" type="submit">Start Game</button>
+        <button id="start-btn" type="submit" aria-label="Start Game">Start Game</button>
     </form>
    </dialog>
     <div class="container">
@@ -36,7 +36,7 @@
             <div class="p2-name"></div>
             <div class="p2-score"></div>
         </div>
-        <button class="replay-btn"></button>
+        <button class="replay-btn" aria-label="Replay Game"></button>
     </div>
     <script src="script.js"></script>
 </body>
