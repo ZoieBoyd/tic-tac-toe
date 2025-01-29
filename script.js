@@ -59,8 +59,6 @@ const gameController = (() => {
         }
     }
 
-    const getMoveCount = () => moveCount;
-
     const winningConditions = [
         // Columns
         [[0, 0], [1, 0], [2, 0]],
@@ -89,7 +87,7 @@ const gameController = (() => {
         currentPlayer = players[0];
     }
 
-    return {getCurrentPlayer, makeMove, getPlayStatus, setPlayerNames, getPlayers, newRound, getMoveCount};
+    return {getCurrentPlayer, makeMove, getPlayStatus, setPlayerNames, getPlayers, newRound, checkWinner};
 })();
 
 const screenController = (() => {
@@ -167,15 +165,15 @@ const screenController = (() => {
         updatePlayerInfo();
         updateCurrentPlayerText();
         renderBoard();
-
         
         if (!gameController.getPlayStatus()) {
-            if (gameController.getMoveCount() === 9){
-                currentPlayerDiv.textContent = "It's a tie!";
-            } else {
+            if (gameController.checkWinner()) {
                 const currentPlayer = gameController.getCurrentPlayer();
                 currentPlayerDiv.innerHTML = `<span class="${currentPlayer.getPlayerSymbol() === 'X' ? 'player-one' : 'player-two'}">${currentPlayer.getPlayerName()}</span> Wins!`; 
+            } else {
+                currentPlayerDiv.textContent = "It's a tie!";
             }
+
             replayBtn.style.visibility = "visible";
             replayBtn.addEventListener("click", () => {
                gameController.newRound();
