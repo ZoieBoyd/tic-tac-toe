@@ -8,7 +8,6 @@
     src: url(fonts/FredokaOne-Regular.woff2) format('woff2');
 }
 
-
 @font-face {
     font-family: 'fredoka-light';
     src: url('fonts/fredoka-light.woff2') format('woff2');
@@ -16,11 +15,11 @@
 
 :root {
     --blue: #47F9FF;
+    --pale-blue: #baf3f5;
     --bright-pink: #F43DBD;
     --pink: #FF80D5;
-    --deep-magenta: #BE3094;
     --pale-pink: #ffb8e7;
-    --pale-blue: #baf3f5;
+    --deep-magenta: #BE3094;
 }
 
 body {
@@ -117,7 +116,7 @@ input[type="text"] {
 .current-player {
     text-align: center;
     grid-area: turnText;
-    font-size: clamp(1rem, 10vw, 5.5rem);
+    font-size: clamp(2.5rem, 10vw, 5.5rem);
     padding: 2rem;
 }
 
@@ -133,11 +132,11 @@ input[type="text"] {
     background-color: white;
     color: var(--pink);
     border: none;
-    width:  21vh;
-    height: 21vh;
+    width:  min(21vw, 21vh);
+    height: min(21vw, 21vh);
     font-family: "baby-gemoy";
-    font-size: clamp(2rem, 10vw, 8rem);
-    -webkit-text-stroke: 4px black;
+    font-size: clamp(3.5rem, 10vw, 8rem);
+    -webkit-text-stroke: clamp(2px, 0.3vw, 4px) black;
     border-radius: 15px;
 }
 
@@ -175,11 +174,11 @@ input[type="text"] {
 }
 
 .p1-name, .p2-name {
-    font-size: 2.5rem;
+    font-size: clamp(1.5rem, 5vw, 2.5rem);
 }
 
 .p1-score, .p2-score {
-    font-size: 6rem;
+    font-size: clamp(4rem, 5vw, 6rem);
 }
 
 .replay-btn {
@@ -187,9 +186,33 @@ input[type="text"] {
     background: url(images/replay.svg);
     background-size: contain;
     background-repeat: no-repeat;
-    width: 5vw;
-    height: 5vw;
+    width: 5rem;
+    height: 5rem;
     border: none;
     grid-area: replay;
     margin-top: 2rem;
+}
+
+@media only screen and (max-width: 1500px) {
+    .container {
+        grid-template-areas: "turnText turnText"
+                            "gameBoard gameBoard"
+                            "p1Score p2Score"
+                            "replay replay";
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .current-player {
+        width: 80vw;
+        height: 8vh;
+    }
+
+    .score-container {
+        width: 70%;
+        height: 14vh;
+    }
+
+    .gameboard {
+        margin-bottom: 2.5rem;
+    }
 }
