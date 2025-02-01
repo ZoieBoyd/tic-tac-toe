@@ -20,6 +20,7 @@
     --pink: #FF80D5;
     --pale-pink: #ffb8e7;
     --deep-magenta: #BE3094;
+    --light-gray: #e9e9e9;
 }
 
 body {
@@ -28,7 +29,7 @@ body {
     align-items: center;
     height: 95vh;
     background-color: var(--bright-pink);
-    font-family: "fredoka-one";
+    font-family: "fredoka-one", Arial, Helvetica, sans-serif;
     color: white;
 }
 
@@ -55,7 +56,7 @@ form {
 }
 
 label {
-    font-family: "baby-gemoy";
+    font-family: "baby-gemoy", Arial, Helvetica, sans-serif;
     -webkit-text-stroke: 2.6px black;
     font-size: clamp(3.5rem, 5vw, 4rem);
 }
@@ -71,7 +72,7 @@ label[for="player-two-name"] {
 
 input[type="text"] {
     border: none;
-    font-family: "fredoka-light";
+    font-family: "fredoka-light", Arial, Helvetica, sans-serif;
     font-weight: 600;
     padding: 18px;
     margin-left: 0.7vw;
@@ -93,7 +94,7 @@ input[type="text"] {
 }
 
 #start-btn {
-    font-family: "fredoka-one";
+    font-family: "fredoka-one", Arial, Helvetica, sans-serif;
     font-size: 2.3rem;
     border: none;
     background-color: var(--pink);
@@ -136,10 +137,14 @@ input[type="text"] {
     border: none;
     width:  min(21vw, 21vh);
     height: min(21vw, 21vh);
-    font-family: "baby-gemoy";
+    font-family: "baby-gemoy", Arial, Helvetica, sans-serif;
     font-size: clamp(3.5rem, 10vw, 8rem);
     -webkit-text-stroke: clamp(2px, 0.3vw, 4px) black;
     border-radius: 15px;
+}
+
+.cell-button:empty:hover {
+    background-color: var(--light-gray);
 }
 
 .x-symbol {
@@ -195,6 +200,10 @@ input[type="text"] {
     margin-top: 2rem;
 }
 
+.replay-btn:hover {
+    filter: brightness(0.9);
+}
+
 @media only screen and (max-width: 1500px) {
     dialog {
         height: 100vh;
@@ -223,5 +232,4 @@ input[type="text"] {
     .gameboard {
         margin-bottom: 2.5rem;
     }
-
 }
