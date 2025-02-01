@@ -1,6 +1,6 @@
 # Tic-Tac-Toe
 
-<img src = "images/screenshot.png" height = "450"  alt = "Game screen preview"/>
+<img src = "images/screenshot.png" height = "400"  alt = "Game screen preview"/>
 
 ## Description
 This project is a desktop version of the classic game of [Tic-tac-toe](https://en.wikipedia.org/wiki/Tic-tac-toe). It was created with the purpose of progressing through [The Odin Project](https://www.theodinproject.com/)'s Full Stack JavaScript section.
