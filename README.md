@@ -5,7 +5,7 @@
 ## Description
 This project is a desktop version of the classic game of [Tic-tac-toe](https://en.wikipedia.org/wiki/Tic-tac-toe). It was created with the purpose of progressing through [The Odin Project](https://www.theodinproject.com/)'s Full Stack JavaScript section.
 
-[View Live Demo]((https://zoieboyd.github.io/tic-tac-toe/))
+[View Live Demo](https://zoieboyd.github.io/tic-tac-toe/)
 
 ## How It's Made:
 ### Technologies
